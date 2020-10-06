@@ -78,25 +78,4 @@ class Ingredient(object):
         elif amount > avg + 10 or amount > avg - 10:
             self.value -= 10
         
-yuh = {
-    "chips": [10, 40, 20],
-    "egg": [2, 5]
-}
-ing = Ingredient("chips", 10)
-a = ing.value
-print(a)
-ing.update_value(yuh)
-a = ing.value
-print(a)
-
-
-
-# "ex. current ingredient is chips w/ 1 gram"
-
-# INGREDIENTS_OF_VALUE["chips"] = [20, 30, 20,10]
-# len = 4 
-# avg = 20 
-# + 80 perfect (=)
-# - 20 slightly below avg (+/- 5)
-# - 80 way below/above (+/- 6) """
 
