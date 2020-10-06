@@ -7,6 +7,7 @@ Description: This file holds the functions neccessary for reading the initial re
 """
 
 import glob
+import random 
 from classes import Recipe, Ingredient
 
 
@@ -25,9 +26,15 @@ def read_files(file_names):
         recipe_string_name = recipe_name[8:-4]
         # print(recipe_name)
 
+      
+
         # Open the current file and append each ingredient to the ingredient_array
         with open(recipe_name) as recipe:
+
             ingredient_array = []
+
+            # Add extra fitness points for good ingredients 
+            fitness_addition = 0 
 
             # Create the Ingredient objects
             for line in recipe:
@@ -35,8 +42,6 @@ def read_files(file_names):
                 if (line.find(" g ") != -1):
                     ingredient_name = line.split(' g ')[1]
 
-                else:
-                    ingredient_name = " ".join(line.split()[1:])
                 line_array = line.split()
                 measurement = line_array[0]
                 ingredient = create_ingredients(
@@ -45,6 +50,12 @@ def read_files(file_names):
 
             # Create the Recipe object
             recipe_object = create_recipe(recipe_string_name, ingredient_array)
+            print("before", recipe_object.fitness)
+
+            # Add fitness points if possible 
+            recipe_object.fitness += fitness_addition
+            print("after", recipe_object.fitness)
+
             recipes_object_array.append(recipe_object)
     return (recipes_object_array)
 

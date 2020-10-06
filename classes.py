@@ -52,10 +52,51 @@ class Recipe(object):
 
 
 class Ingredient(object):
-    def __init__(self, name, amount):
+    def __init__(self, name, amount, value=1):
         self.name = name
         self.amount = amount
+        self.value = value
 
     def __str__(self):
         """Returns a string representation of this Ingredient."""
-        return f"Ingredient: {self.name}, Amount: {self.amount}g"
+        return f"Ingredient: {self.name}, Amount: {self.amount}g, Value: {self.value}"
+
+    def update_value(self, ingredients_of_val):
+        amount_array = ingredients_of_val[self.name]
+        length = len(amount_array)
+        avg = 0
+        for amount in amount_array:
+            avg += amount
+        avg = float(avg/length)
+        amount = float(self.amount)
+        print("average is : ",avg)
+        print("amount is : ",amount)
+        if amount == avg:
+            self.value += 10
+        elif amount > avg + 5 or amount < avg - 5:
+            self.value -= 5
+        elif amount > avg + 10 or amount > avg - 10:
+            self.value -= 10
+        
+yuh = {
+    "chips": [10, 40, 20],
+    "egg": [2, 5]
+}
+ing = Ingredient("chips", 10)
+a = ing.value
+print(a)
+ing.update_value(yuh)
+a = ing.value
+print(a)
+
+
+
+# "ex. current ingredient is chips w/ 1 gram"
+
+# INGREDIENTS_OF_VALUE["chips"] = [20, 30, 20,10]
+# len = 4 
+# avg = 20 
+# + 80 perfect (=)
+# - 20 slightly below avg (+/- 5)
+# - 80 way below/above (+/- 6) """
+

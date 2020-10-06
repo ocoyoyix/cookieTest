@@ -62,7 +62,7 @@ def main():
                 print("\n", "*** deleting an ingredient ***")
                 delete_ingredient(offspring)
             else:
-                print("\n", "*** changing a topping***")
+                print("\n", "*** changing a topping ***")
                 change_topping(offspring, topping_names)
 
             offspring_list.append(offspring)
