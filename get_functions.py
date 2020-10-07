@@ -14,11 +14,14 @@ def get_probability(recipes_array):
     """Returns two recipes at random which will be used to create a new recipe""" 
     global TOTAL_FITNESS 
     
-    greatest_prob = 0; 
+    greatest_prob = 0.0; 
 
     # get the total number of ingredients
     for recipe in recipes_array: 
         TOTAL_FITNESS += recipe.fitness
+        print(recipe.fitness)
+    
+    print(TOTAL_FITNESS)
     
     # update the probability of each recipe being chosen 
     for recipe in recipes_array: 

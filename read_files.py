@@ -10,6 +10,7 @@ import glob
 import random 
 from classes import Recipe, Ingredient
 
+INGREDIENTS_OF_VALUE = {}
 
 def read_files(file_names):
     """Reads the file `recipes` and returns an array of Recipe objects 
@@ -26,37 +27,32 @@ def read_files(file_names):
         recipe_string_name = recipe_name[8:-4]
         # print(recipe_name)
 
-      
-
         # Open the current file and append each ingredient to the ingredient_array
         with open(recipe_name) as recipe:
 
             ingredient_array = []
-
-            # Add extra fitness points for good ingredients 
-            fitness_addition = 0 
 
             # Create the Ingredient objects
             for line in recipe:
 
                 if (line.find(" g ") != -1):
                     ingredient_name = line.split(' g ')[1]
+                    ingredient_name = ingredient_name.replace('\n','')
 
                 line_array = line.split()
                 measurement = line_array[0]
                 ingredient = create_ingredients(
                     ingredient_name, float(measurement))
-                ingredient_array.append(ingredient)
-
+                
+            
             # Create the Recipe object
             recipe_object = create_recipe(recipe_string_name, ingredient_array)
-            print("before", recipe_object.fitness)
-
-            # Add fitness points if possible 
-            recipe_object.fitness += fitness_addition
-            print("after", recipe_object.fitness)
 
             recipes_object_array.append(recipe_object)
+    
+        
+        
+
     return (recipes_object_array)
 
 
@@ -78,4 +74,13 @@ def create_recipe(recipe_name, ingredients):
 def create_ingredients(name, measurement):
     """Returns the new Ingredient object."""
     ingredient_created = Ingredient(name, measurement)
+
+    # Add ingredient to INGREDIENTS_OF_VALUE 
+    if ingredient_created.name in INGREDIENTS_OF_VALUE:
+        INGREDIENTS_OF_VALUE[ingredient_created.name] = INGREDIENTS_OF_VALUE[ingredient_created.name] + [ingredient_created.amount] 
+    else: 
+        INGREDIENTS_OF_VALUE[ingredient_created.name] = [ingredient_created.amount]
+    
+    ingredient_created.update_value(INGREDIENTS_OF_VALUE)
+
     return ingredient_created
