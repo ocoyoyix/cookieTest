@@ -7,8 +7,10 @@ Description: This file holds the functions neccessary for reading the initial re
 """
 
 import glob
+import random 
 from classes import Recipe, Ingredient
 
+INGREDIENTS_OF_VALUE = {}
 
 def read_files(file_names):
     """Reads the file `recipes` and returns an array of Recipe objects 
@@ -27,6 +29,7 @@ def read_files(file_names):
 
         # Open the current file and append each ingredient to the ingredient_array
         with open(recipe_name) as recipe:
+
             ingredient_array = []
 
             # Create the Ingredient objects
@@ -34,18 +37,22 @@ def read_files(file_names):
 
                 if (line.find(" g ") != -1):
                     ingredient_name = line.split(' g ')[1]
+                    ingredient_name = ingredient_name.replace('\n','')
 
-                else:
-                    ingredient_name = " ".join(line.split()[1:])
                 line_array = line.split()
                 measurement = line_array[0]
                 ingredient = create_ingredients(
                     ingredient_name, float(measurement))
-                ingredient_array.append(ingredient)
-
+                
+            
             # Create the Recipe object
             recipe_object = create_recipe(recipe_string_name, ingredient_array)
+
             recipes_object_array.append(recipe_object)
+    
+        
+        
+
     return (recipes_object_array)
 
 
@@ -67,4 +74,13 @@ def create_recipe(recipe_name, ingredients):
 def create_ingredients(name, measurement):
     """Returns the new Ingredient object."""
     ingredient_created = Ingredient(name, measurement)
+
+    # Add ingredient to INGREDIENTS_OF_VALUE 
+    if ingredient_created.name in INGREDIENTS_OF_VALUE:
+        INGREDIENTS_OF_VALUE[ingredient_created.name] = INGREDIENTS_OF_VALUE[ingredient_created.name] + [ingredient_created.amount] 
+    else: 
+        INGREDIENTS_OF_VALUE[ingredient_created.name] = [ingredient_created.amount]
+    
+    ingredient_created.update_value(INGREDIENTS_OF_VALUE)
+
     return ingredient_created
