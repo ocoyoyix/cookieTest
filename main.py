@@ -17,10 +17,11 @@ from classes import Recipe, Ingredient
 
 
 def main():
+    INGREDIENTS_OF_VALUE = {}
     # prepping first generation from the inspiring set
     recipe_names = file_names("recipes/*.txt")
     topping_names = file_names("toppings/*.txt")
-    parent = read_files(recipe_names)
+    parent = read_files(recipe_names, INGREDIENTS_OF_VALUE)
 
     # creating n number of generations
     num_of_generations = 2
@@ -77,7 +78,7 @@ def main():
 
         # Create the final array of the 6 fittest Recipes
         parent = offspring_half + parent_half
-        
+
         # Ranking fitnesses and getting the best recipe out of the parent recipes array
         fitness_array = []
         best_recipe = ""
@@ -100,9 +101,10 @@ def main():
         print("\n", recipe.name)
         recipe.print_ingredients()
         recipe.get_toppings()[1]
-    
+
     print("\n", "---------------------")
     print("\n", "* Top Recipe *")
+    print(best_recipe.name)
     best_recipe.print_ingredients()
     best_recipe.get_toppings()[1]
 

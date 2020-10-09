@@ -96,13 +96,6 @@ def add_ingredient(recipe_obj, file_list):
     recipe_obj.ingredients.append(
         Ingredient(ingredient_name, ingredient_amount))
 
-    # The fitness increases by one because a new ingredient is added
-    recipe_obj.fitness += 1
-
-    # Calculates the new total ounces of ingredients
-    # in the recipe and then normalizes each quantity for
-    # the final total to equal 100
-
 
 def delete_ingredient(recipe_obj):
     """An ingredient is selected uniformly at random from the recipe, 
@@ -112,11 +105,3 @@ def delete_ingredient(recipe_obj):
     choose_ingredient = random.randint(0, len(recipe_obj.ingredients) - 1)
 
     # removes the ingredient from the recipe object
-    recipe_obj.ingredients.pop(choose_ingredient)
-
-    # since one ingredient is removed, the fitness is one less
-    recipe_obj.fitness -= 1
-
-    # Calculates the new total ounces of ingredients
-    # in the recipe and then normalizes each quantity for
-    # the final total to equal 100

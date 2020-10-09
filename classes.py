@@ -50,6 +50,13 @@ class Recipe(object):
                 topping_list[1].append(ingredient)
         return topping_list
 
+    def set_fitness(self):
+        """Changes the fitness value of the recipe.It does so by adding the values of all the ingredients in the recipe"""
+        total_fitness = 0
+        for ingredient in self.ingredients:
+            total_fitness += ingredient.value
+        self.fitness = total_fitness
+
 
 class Ingredient(object):
     def __init__(self, name, amount, value=1):
@@ -75,5 +82,3 @@ class Ingredient(object):
             self.value -= 5
         elif amount > avg + 10 or amount > avg - 10:
             self.value -= 10
-        
-
