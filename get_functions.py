@@ -19,9 +19,6 @@ def get_probability(recipes_array):
     # get the total number of ingredients
     for recipe in recipes_array: 
         TOTAL_FITNESS += recipe.fitness
-        print(recipe.fitness)
-    
-    print(TOTAL_FITNESS)
     
     # update the probability of each recipe being chosen 
     for recipe in recipes_array: 
@@ -100,22 +97,32 @@ def pivot_ingredients(list_one, list_two):
 
 
 def get_top_fitness(recipes_array):
-    """Returns a list with the top 50% Recipes of a list"""
+    """Returns a list of the top 6 ranked"""
 
-    first = recipes_array[0]
-    second = recipes_array[1]
-    third = recipes_array[2]
+    fitness_array = []
+    top_ranked_ordered = []
+    top6_array = []
+
+    for recipe in recipes_array:
+        fitness = recipe.fitness
+        fitness_array.append(fitness)
+
+    fitness_array.sort(reverse=True)
+    fitness_array = fitness_array[:6]
+
+    for recipe in recipes_array:
+        if recipe.fitness in fitness_array:
+            top6_array.append(recipe)
     
-    # Only loops throught the last three index of the list
-    for x in range(3,6):
-        # Determines if the Recipe at the current index
-        # has a index greater than that of the current 
-        # three highest Recipes
-        if(recipes_array[x].fitness > first.fitness):
-            first = recipes_array[x]
-        elif(recipes_array[x].fitness > second.fitness):
-            second = recipes_array[x]
-        elif(recipes_array[x].fitness > third.fitness):
-            third = recipes_array[x]
-        
-    return [first, second, third]
+    count = 0
+    while (count < 6):
+        first = max(fitness_array)
+        for recipe in top6_array:
+            if recipe.fitness == first:
+                top_ranked_ordered.append(recipe)
+                count += 1
+                fitness_array.remove(first)
+                if len(fitness_array) == 0:
+                    break
+            first = max(fitness_array)
+    return top_ranked_ordered

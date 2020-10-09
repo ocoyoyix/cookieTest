@@ -44,6 +44,7 @@ def read_files(file_names):
                 ingredient = create_ingredients(
                     ingredient_name, float(measurement))
                 
+                ingredient_array.append(ingredient)
             
             # Create the Recipe object
             recipe_object = create_recipe(recipe_string_name, ingredient_array)
