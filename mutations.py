@@ -34,7 +34,7 @@ def ingredient_from_set(file_list, ingredient_names, amount=False):
             ingredient_name = " ".join(my_line.split()[1:])
 
         if(ingredient_names.count(ingredient_name) == 0):
-            if(amount):
+            if (amount):
                 return Ingredient(ingredient_name, ingredient_amount)
             else:
                 return ingredient_name
@@ -46,7 +46,7 @@ def change_ingredient_amount(recipe_obj):
     ingredient = random.choice(recipe_obj.ingredients)
 
     previous_amount = ingredient.amount
-    new_amount = random.randrange(0, 10) + recipe_obj.fitness
+    new_amount = random.randrange(1, 10)
 
     # this if statement makes sure that
     # there will always be a change in the amount
@@ -67,6 +67,9 @@ def change_ingredient_name(recipe_obj, file_list):
     new_name = ingredient_from_set(file_list, recipe_obj.ingredients)
 
     # This is where the ingredient name is changed
+    while (ingredient.name == new_name):
+        new_name = ingredient_from_set(file_list, recipe_obj.ingredients)
+    
     ingredient.name = new_name
 
     # Calculates the new total ounces of ingredients
@@ -105,3 +108,4 @@ def delete_ingredient(recipe_obj):
     choose_ingredient = random.randint(0, len(recipe_obj.ingredients) - 1)
 
     # removes the ingredient from the recipe object
+    recipe_obj.ingredients.pop(choose_ingredient)
