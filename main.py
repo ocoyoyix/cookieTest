@@ -77,6 +77,21 @@ def main():
 
         # Create the final array of the 6 fittest Recipes
         parent = offspring_half + parent_half
+        
+        # Ranking fitnesses and getting the best recipe out of the parent recipes array
+        fitness_array = []
+        best_recipe = ""
+        for recipe in parent:
+            fitness = recipe.fitness
+            fitness_array.append(fitness)
+
+        fitness_array.sort(reverse=True)
+        best_fitness = max(fitness_array)
+
+        for recipe in parent:
+            if recipe.fitness == best_fitness:
+                best_recipe = recipe
+                break
 
     print("\n", "---------------------")
     print("\n", "* Final Recipes *")
@@ -85,6 +100,11 @@ def main():
         print("\n", recipe.name)
         recipe.print_ingredients()
         recipe.get_toppings()[1]
+    
+    print("\n", "---------------------")
+    print("\n", "* Top Recipe *")
+    best_recipe.print_ingredients()
+    best_recipe.get_toppings()[1]
 
     print("--------------")
     print("ENJOY :)", "\n")

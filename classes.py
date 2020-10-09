@@ -69,8 +69,6 @@ class Ingredient(object):
             avg += amount
         avg = float(avg/length)
         amount = float(self.amount)
-        print("average is : ",avg)
-        print("amount is : ",amount)
         if amount == avg:
             self.value += 10
         elif amount > avg + 5 or amount < avg - 5:
