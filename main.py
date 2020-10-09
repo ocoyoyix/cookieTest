@@ -22,6 +22,10 @@ def main():
     recipe_names = file_names("recipes/*.txt")
     topping_names = file_names("toppings/*.txt")
     parent = read_files(recipe_names, INGREDIENTS_OF_VALUE)
+    
+    for recipe in parent:
+        recipe.remove_duplicates()
+        recipe.set_fitness(INGREDIENTS_OF_VALUE)
 
     # creating n number of generations
     num_of_generations = 2
@@ -46,6 +50,7 @@ def main():
             name = "new_recipe_" + str(num_of_offspring)
 
             offspring = Recipe(name, genetic_crossover)
+            recipe.remove_duplicates()
 
             # Chooses a random mutation method my asigning each function to an int int the range [0,3]
             generate_random_int = random.randint(0, 4)
@@ -53,18 +58,23 @@ def main():
             if (generate_random_int == 0):
                 print("\n", "*** changing ingredient name ***")
                 change_ingredient_name(offspring, recipe_names)
+                offspring.remove_duplicates()
+                offspring.set_fitness(INGREDIENTS_OF_VALUE)
             elif (generate_random_int == 1):
                 print("\n", "*** changing ingredient amount ***")
                 change_ingredient_amount(offspring)
+                offspring.remove_duplicates()
+                offspring.set_fitness(INGREDIENTS_OF_VALUE)
             elif (generate_random_int == 2):
                 print("\n", "*** adding an ingredient ***")
                 add_ingredient(offspring, recipe_names)
+                offspring.remove_duplicates()
+                offspring.set_fitness(INGREDIENTS_OF_VALUE)
             elif(generate_random_int == 3):
                 print("\n", "*** deleting an ingredient ***")
                 delete_ingredient(offspring)
-            else:
-                print("\n", "*** changing a topping ***")
-                change_topping(offspring, topping_names)
+                offspring.remove_duplicates()
+                offspring.set_fitness(INGREDIENTS_OF_VALUE)
 
             offspring_list.append(offspring)
 
@@ -72,27 +82,16 @@ def main():
             for recipe in offspring_list:
                 print("\n", recipe.name)
 
-        # Calculating the top 50% of each list(parent, offspring)
-        offspring_half = get_top_fitness(offspring_list)
-        parent_half = get_top_fitness(parent)
 
         # Create the final array of the 6 fittest Recipes
-        parent = offspring_half + parent_half
+        for recipe in parent:
+            recipe.remove_duplicates()
+            recipe.set_fitness(INGREDIENTS_OF_VALUE)
+        parent = get_top_fitness(offspring_list + parent)
+        
 
         # Ranking fitnesses and getting the best recipe out of the parent recipes array
-        fitness_array = []
-        best_recipe = ""
-        for recipe in parent:
-            fitness = recipe.fitness
-            fitness_array.append(fitness)
-
-        fitness_array.sort(reverse=True)
-        best_fitness = max(fitness_array)
-
-        for recipe in parent:
-            if recipe.fitness == best_fitness:
-                best_recipe = recipe
-                break
+        best_recipe = parent[0]
 
     print("\n", "---------------------")
     print("\n", "* Final Recipes *")
@@ -100,13 +99,11 @@ def main():
     for recipe in parent:
         print("\n", recipe.name)
         recipe.print_ingredients()
-        recipe.get_toppings()[1]
 
     print("\n", "---------------------")
     print("\n", "* Top Recipe *")
     print(best_recipe.name)
     best_recipe.print_ingredients()
-    best_recipe.get_toppings()[1]
 
     print("--------------")
     print("ENJOY :)", "\n")
