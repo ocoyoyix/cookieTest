@@ -14,7 +14,7 @@ class Recipe(object):
     def __init__(self, name, ingredients):
         self.name = name
         self.ingredients = ingredients
-        self.fitness = len(ingredients)
+        self.fitness = 0
         self.curr_probability = 0
         self.total = 0
 
@@ -42,7 +42,6 @@ class Recipe(object):
 
     def get_toppings(self):
         """Returns the indexes of all the toppings in the recipe and all of the ingredient objects itself"""
-        print("*in topping get*:")
         topping_list = [[], []]
         for i, ingredient in enumerate(self.ingredients):
             if '*' in ingredient.name:
@@ -50,6 +49,39 @@ class Recipe(object):
                 topping_list[1].append(ingredient)
         return topping_list
 
+    def set_fitness(self, ingredients_of_val):
+        """Changes the fitness value of the recipe. It does so by adding the values of all the ingredients in the recipe"""
+        total_fitness = 0
+        for ingredient in self.ingredients:
+            ingredient.update_value(ingredients_of_val)
+            total_fitness += ingredient.value
+        
+        if(len(self.get_toppings()) == 0):
+            total_fitness -= 45
+        
+        if(len(self.ingredients) < 4):
+            total_fitness -= 70
+        elif(len(self.ingredients) >= 8):
+            total_fitness += 20   
+        
+            
+        self.fitness = total_fitness
+
+    def remove_duplicates(self):
+        list_names = self.get_ingredient_names()
+        
+        for name in list_names:
+            new_amount = 0.0 
+            if(list_names.count(name) > 1):
+                # find all indices of name 
+                indicies = [i for i, ingredient in enumerate(self.ingredients) if ingredient.name == name]
+                count = len(indicies) - 1
+                while(len(indicies) != 1):
+                    removed = self.ingredients.pop(indicies[count])
+                    new_amount += removed.amount 
+                    indicies.pop(count)
+                    count -= 1
+                self.ingredients[indicies[0]].amount += new_amount  
 
 class Ingredient(object):
     def __init__(self, name, amount, value=1):
@@ -59,7 +91,7 @@ class Ingredient(object):
 
     def __str__(self):
         """Returns a string representation of this Ingredient."""
-        return f"Ingredient: {self.name}, Amount: {self.amount}g, Value: {self.value}"
+        return f"Ingredient: {self.name}, Amount: {self.amount}g"
 
     def update_value(self, ingredients_of_val):
         amount_array = ingredients_of_val[self.name]
@@ -69,11 +101,5 @@ class Ingredient(object):
             avg += amount
         avg = float(avg/length)
         amount = float(self.amount)
-        if amount == avg:
-            self.value += 10
-        elif amount > avg + 5 or amount < avg - 5:
-            self.value -= 5
-        elif amount > avg + 10 or amount > avg - 10:
-            self.value -= 10
-        
 
+        self.value -= abs(avg - amount)
