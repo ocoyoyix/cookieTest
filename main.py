@@ -1,12 +1,12 @@
-""" 
+"""
 Authors: Orlando Coyoy, Ya'Kuana Davis, Roger Trejo
 Course Name: CSCI 3725
 Assignment Name: PQ1
 Date: September 25, 2020
-Description: This document can be used to run our modified version of PIERRE. The files classes.py, get_methods.py, reading_files.py and mutations are all imported into this file and utilized as necessary. Use `python3 main.py` in the terminal to explore our code.  
-*** Disclaimer *** 
-Sept. 25: change_ingredient_name function occasionally gets stuck in a loop. Recipe total amounts do not add up to 100. Some exceed and others are way below. 
-Sept. 30: change_ingredient_name function has not broken the code after 30 runs. Recipe total amounts add up to 100. Decimal points can be 9 digits long. 
+Description: This document can be used to run our modified version of PIERRE. The files classes.py, get_methods.py, reading_files.py and mutations are all imported into this file and utilized as necessary. Use `python3 main.py` in the terminal to explore our code.
+*** Disclaimer ***
+Sept. 25: change_ingredient_name function occasionally gets stuck in a loop. Recipe total amounts do not add up to 100. Some exceed and others are way below.
+Sept. 30: change_ingredient_name function has not broken the code after 30 runs. Recipe total amounts add up to 100. Decimal points can be 9 digits long.
 """
 
 import random
@@ -22,7 +22,6 @@ def main():
     recipe_names = file_names("recipes/*.txt")
     topping_names = file_names("toppings/*.txt")
     parent = read_files(recipe_names, INGREDIENTS_OF_VALUE)
-    
     for recipe in parent:
         recipe.remove_duplicates()
         recipe.set_fitness(INGREDIENTS_OF_VALUE)
@@ -52,7 +51,7 @@ def main():
             offspring = Recipe(name, genetic_crossover)
             recipe.remove_duplicates()
 
-            # Chooses a random mutation method my asigning each function to an int int the range [0,3]
+            # Chooses a random mutation method my assigning each function to an int in the range [0,3]
             generate_random_int = random.randint(0, 4)
 
             if (generate_random_int == 0):
@@ -88,11 +87,11 @@ def main():
             recipe.remove_duplicates()
             recipe.set_fitness(INGREDIENTS_OF_VALUE)
         parent = get_top_fitness(offspring_list + parent)
-        
 
         # Ranking fitnesses and getting the best recipe out of the parent recipes array
         best_recipe = parent[0]
 
+    #Printing the final recipes and the top recipes
     print("\n", "---------------------")
     print("\n", "* Final Recipes *")
 

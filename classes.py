@@ -15,13 +15,13 @@ class Recipe(object):
         self.name = name
         self.ingredients = ingredients
         self.fitness = 0
-        self.curr_probability = 0
+        self.current_probability = 0
         self.total = 0
 
-    def set_curr_prob(self, total):
+    def set_current_prob(self, total):
         """Updates the probability of this recipe being chosen
         given the total fitness of all recipes in existence."""
-        self.curr_probability = self.fitness/total
+        self.current_probability = self.fitness/total
 
     def __str__(self):
         """Returns a string representation of this Recipe."""
@@ -50,24 +50,27 @@ class Recipe(object):
         return topping_list
 
     def set_fitness(self, ingredients_of_val):
-        """Changes the fitness value of the recipe. It does so by adding the values of all the ingredients in the recipe"""
+        """Changes the fitness value of the recipe based on number toppings and number of ingredients."""
         total_fitness = 0
+
         for ingredient in self.ingredients:
             ingredient.update_value(ingredients_of_val)
             total_fitness += ingredient.value
         
+        # Reduce the fitness of cookie recipes with no toppings 
         if(len(self.get_toppings()) == 0):
             total_fitness -= 45
-        
+
+        # Removes and Adds points based on lenfth of ingredients list
         if(len(self.ingredients) < 4):
             total_fitness -= 70
         elif(len(self.ingredients) >= 8):
             total_fitness += 20   
-        
-            
+          
         self.fitness = total_fitness
 
     def remove_duplicates(self):
+        """ Goes through the recipes and removes any dulucations that are found. """
         list_names = self.get_ingredient_names()
         
         for name in list_names:
@@ -94,6 +97,7 @@ class Ingredient(object):
         return f"Ingredient: {self.name}, Amount: {self.amount}g"
 
     def update_value(self, ingredients_of_val):
+        """ Updates the value of the ingredient by using an avgerage based model to determine the value change"""
         amount_array = ingredients_of_val[self.name]
         length = len(amount_array)
         avg = 0
