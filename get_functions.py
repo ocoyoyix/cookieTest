@@ -23,10 +23,10 @@ def get_probability(recipes_array):
 
     # update the probability of each recipe being chosen
     for recipe in recipes_array:
-        recipe.set_curr_prob(TOTAL_FITNESS)
+        recipe.set_current_prob(TOTAL_FITNESS)
 
-        if recipe.curr_probability > greatest_prob:
-            greatest_prob = recipe.curr_probability
+        if recipe.current_probability > greatest_prob:
+            greatest_prob = recipe.current_probability
 
     # store propability selected recipes without duplicates
     selected = set()
@@ -36,7 +36,7 @@ def get_probability(recipes_array):
         random_num = random.uniform(0, greatest_prob)
 
         for recipe in recipes_array:
-            if recipe.curr_probability < random_num:
+            if recipe.current_probability < random_num:
                 selected.add(recipe)
 
         if len(selected) >= 2:

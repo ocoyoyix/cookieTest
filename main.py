@@ -74,13 +74,17 @@ def main():
                 delete_ingredient(offspring)
                 offspring.remove_duplicates()
                 offspring.set_fitness(INGREDIENTS_OF_VALUE)
+            elif(generate_random_int == 4):
+                print("\n", "*** changing the topping ***")
+                change_topping(offspring, topping_names)
+                offspring.remove_duplicates()
+                offspring.set_fitness(INGREDIENTS_OF_VALUE)
 
             offspring_list.append(offspring)
 
             print("\n", "----- current offspring list -----")
             for recipe in offspring_list:
                 print("\n", recipe.name)
-
 
         # Create the final array of the 6 fittest Recipes
         for recipe in parent:
@@ -91,7 +95,7 @@ def main():
         # Ranking fitnesses and getting the best recipe out of the parent recipes array
         best_recipe = parent[0]
 
-    #Printing the final recipes and the top recipes
+    # Printing the final recipes and the top recipes
     print("\n", "---------------------")
     print("\n", "* Final Recipes *")
 

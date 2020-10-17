@@ -56,35 +56,37 @@ class Recipe(object):
         for ingredient in self.ingredients:
             ingredient.update_value(ingredients_of_val)
             total_fitness += ingredient.value
-        
-        # Reduce the fitness of cookie recipes with no toppings 
+
+        # Reduce the fitness of cookie recipes with no toppings
         if(len(self.get_toppings()) == 0):
             total_fitness -= 45
 
         # Removes and Adds points based on lenfth of ingredients list
         if(len(self.ingredients) < 4):
-            total_fitness -= 70
+            total_fitness -= 110
         elif(len(self.ingredients) >= 8):
-            total_fitness += 20   
-          
+            total_fitness += 20
+
         self.fitness = total_fitness
 
     def remove_duplicates(self):
-        """ Goes through the recipes and removes any dulucations that are found. """
+        """ Goes through the recipes and removes any duplucations that are found. """
         list_names = self.get_ingredient_names()
-        
+
         for name in list_names:
-            new_amount = 0.0 
+            new_amount = 0.0
             if(list_names.count(name) > 1):
-                # find all indices of name 
-                indicies = [i for i, ingredient in enumerate(self.ingredients) if ingredient.name == name]
+                # find all indices of name
+                indicies = [i for i, ingredient in enumerate(
+                    self.ingredients) if ingredient.name == name]
                 count = len(indicies) - 1
                 while(len(indicies) != 1):
                     removed = self.ingredients.pop(indicies[count])
-                    new_amount += removed.amount 
+                    new_amount += removed.amount
                     indicies.pop(count)
                     count -= 1
-                self.ingredients[indicies[0]].amount += new_amount  
+                self.ingredients[indicies[0]].amount += new_amount
+
 
 class Ingredient(object):
     def __init__(self, name, amount, value=1):
@@ -98,12 +100,21 @@ class Ingredient(object):
 
     def update_value(self, ingredients_of_val):
         """ Updates the value of the ingredient by using an avgerage based model to determine the value change"""
-        amount_array = ingredients_of_val[self.name]
-        length = len(amount_array)
-        avg = 0
-        for amount in amount_array:
-            avg += amount
-        avg = float(avg/length)
-        amount = float(self.amount)
+        # if the key exists, this is an ingredient of value, and we know the average amounts
+        if(self.name in ingredients_of_val):
+            amount_array = ingredients_of_val[self.name]
+            length = len(amount_array)
+            avg = 0
+            for amount in amount_array:
+                avg += amount
+            avg = float(avg/length)
+            amount = float(self.amount)
 
-        self.value -= abs(avg - amount)
+            self.value -= abs(avg - amount)
+        # if the key does not exist, this is a topping
+        else:
+            # deduct points for bad toppings, add points for good toppings
+            if("bad" in self.name):
+                self.value -= 30
+            else:
+                self.value += 10

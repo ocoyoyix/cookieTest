@@ -1,10 +1,10 @@
-256 g *mini marshmallow
-128 g *skittles
-192 g *crushed heathbar
-64 g *ground almonds
-192 g *m&ms
-120 g *roasted macademia nut
-128 g *sour patch kids
-120 g *crushed oreos
-96 g *crushed snickers
-128 g *dark chocolate
+256 g *mini marshmallow good
+128 g *skittles bad
+192 g *crushed heathbar good
+64 g *ground almonds good
+192 g *m&ms good
+120 g *roasted macademia nut good
+128 g *sour patch kids bad
+120 g *crushed oreos good
+96 g *crushed snickers good
+128 g *dark chocolate bad
